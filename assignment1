@@ -1,0 +1,98 @@
+import java.util.Scanner;
+
+	public class CarBillingSystem {
+	    private static final double MAX_DISCOUNT = 30000;
+
+	    private static class Car {
+	        private String model;
+	        private double showroomPrice;
+
+	        public Car(String model, double showroomPrice) {
+	            this.model = model;
+	            this.showroomPrice = showroomPrice;
+	        }
+
+	        public double getShowroomPrice() {
+	            return showroomPrice;
+	        }
+	    }
+
+	    private static class BillingSystem {
+	        private Car selectedCar;
+	        private boolean needInsurance;
+	        private boolean needAccessories;
+	        private double dealerDiscount;
+
+	        public BillingSystem(Car selectedCar, boolean needInsurance, boolean needAccessories, double dealerDiscount) {
+	            this.selectedCar = selectedCar;
+	            this.needInsurance = needInsurance;
+	            this.needAccessories = needAccessories;
+	            this.dealerDiscount = dealerDiscount;
+	        }
+
+	        public void calculateTotalCost() {
+	            double totalCost = selectedCar.getShowroomPrice() + 113990; 
+
+	            if (needInsurance) {
+	                totalCost += 47300; 
+	            }
+
+	            totalCost += 11000; 
+
+	            if (needAccessories) {
+	                totalCost += 15000; 
+	            }
+
+	            if (dealerDiscount > MAX_DISCOUNT) {
+	                dealerDiscount = MAX_DISCOUNT;
+	            }
+
+	            totalCost -= dealerDiscount;
+
+	            System.out.println("Total cost: " + totalCost);
+	        }
+	    }
+
+	    public static void main(String[] args) {
+	        Scanner scanner = new Scanner(System.in);
+	        Car[] cars = {
+	                new Car("Polo Trendline", 870000),
+	                new Car("Polo Highline", 1009000),
+	                new Car("Virtus Trendline", 1105000),
+	                new Car("Virtus Highline", 1308000),
+	                new Car("Taigun Trendline", 1489000),
+	                new Car("Taigun Highline", 1542000),
+	                new Car("Taigun Topline", 1771000)
+	        };
+
+	        System.out.print("Select car model: ");
+	        String carModel = scanner.nextLine();
+
+	        System.out.print("Do you need Insurance (yes/no): ");
+	        String needInsuranceStr = scanner.nextLine();
+	        boolean needInsurance = needInsuranceStr.equalsIgnoreCase("yes");
+
+	        System.out.print("Do you need Additional Accessories (yes/no): ");
+	        String needAccessoriesStr = scanner.nextLine();
+	        boolean needAccessories = needAccessoriesStr.equalsIgnoreCase("yes");
+
+	        System.out.print("Dealer discount (% or rupees, max 30000): ");
+	        double dealerDiscount = scanner.nextDouble();
+	        Car selectedCar = null;
+	        for (Car car : cars) {
+	            if (car.model.equalsIgnoreCase(carModel)) {
+	                selectedCar = car;
+	                break;
+	            }
+	        }
+
+	        if (selectedCar == null) {
+	            System.out.println("Invalid car model!");
+	        } else {
+	            // Calculate total cost and display output
+	            BillingSystem billingSystem = new BillingSystem(selectedCar, needInsurance, needAccessories, dealerDiscount);
+	            billingSystem.calculateTotalCost();
+	        }
+	    }
+	}
+
